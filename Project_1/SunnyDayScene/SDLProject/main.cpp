@@ -20,9 +20,10 @@ bool gameIsRunning = true;
 ShaderProgram program;
 glm::mat4 viewMatrix, sunMatrix, projectionMatrix, cloudMatrix_1, cloudMatrix_2;
 
-float sunPixelSize = 1; //keep track of sun position
+float sunPixelSize = 1; //keep track of sun size
 float sunRotate = 0;
-bool sunShrink = false;
+bool sunShrink = false; //tells program when to start shrinking sun size
+
 float cloudPixel1 = -5;
 float cloudPixel2 = 2;
 
@@ -110,24 +111,23 @@ void Update() {
     lastTicks = ticks;
     
     
-    sunRotate += 12.0f * deltaTime; //rotate 90d/s
-    
-    //cloudPixel1 += 1.0f * deltaTime; //move 1/s
     //CLoud Motion
     if (cloudPixel1 > 6) {
         cloudPixel1 = -6;
     }
     else{
-        cloudPixel1 += 0.9f * deltaTime; //move 1/s
+        cloudPixel1 += 0.9f * deltaTime;
     }
     if (cloudPixel2 > 6) {
         cloudPixel2 = -6;
     }
     else{
-        cloudPixel2 += 0.6f * deltaTime; //move 1/s
+        cloudPixel2 += 0.6f * deltaTime; 
     }
     
-    //Sun Scaling
+    //Sun Scaling & Rotation
+    sunRotate += 12.0f * deltaTime; //rotate 90d/s
+    
     if (!sunShrink){
         sunPixelSize += 0.12f * deltaTime;
     }
@@ -151,14 +151,14 @@ void Update() {
     cloudMatrix_1 = glm::scale(cloudMatrix_1, glm::vec3(1.5f, 1.0f, 1.0f));
     cloudMatrix_2 = glm::translate(cloudMatrix_2, glm::vec3(cloudPixel2, -1.0f, 0.0f)); //translate by what the position of cloud2 is
     cloudMatrix_2 = glm::scale(cloudMatrix_2, glm::vec3(1.2f, 1.0f, 1.0f));
-    
 }
+
 //Draw Matrix function
 void DrawMatrix(glm::mat4 aMatrix, GLuint textureID){
     program.SetModelMatrix(aMatrix);
     glBindTexture(GL_TEXTURE_2D, textureID);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-};
+}
 
 
 void Render() {
