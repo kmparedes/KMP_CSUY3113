@@ -16,6 +16,7 @@
 		DBDF1B6A2323DEEA007CECB1 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDF1B672323DEEA007CECB1 /* SDL2_image.framework */; };
 		DBDF1B6B2323DEEA007CECB1 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDF1B682323DEEA007CECB1 /* SDL2_mixer.framework */; };
 		FB318AF425EF136100E82724 /* CloudPixArt.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB318AF325EF135400E82724 /* CloudPixArt.png */; };
+		FB318AF625EF2D5500E82724 /* SunPixelArt.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB318AF525EF2D4D00E82724 /* SunPixelArt.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,7 @@
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
 				FB318AF425EF136100E82724 /* CloudPixArt.png in CopyFiles */,
+				FB318AF625EF2D5500E82724 /* SunPixelArt.png in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +48,7 @@
 		DBDF1B672323DEEA007CECB1 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		DBDF1B682323DEEA007CECB1 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		FB318AF325EF135400E82724 /* CloudPixArt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CloudPixArt.png; sourceTree = "<group>"; };
+		FB318AF525EF2D4D00E82724 /* SunPixelArt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SunPixelArt.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				FB318AF325EF135400E82724 /* CloudPixArt.png */,
+				FB318AF525EF2D4D00E82724 /* SunPixelArt.png */,
 				DBDF1B5B2323DE8D007CECB1 /* glm */,
 				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
 				DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */,

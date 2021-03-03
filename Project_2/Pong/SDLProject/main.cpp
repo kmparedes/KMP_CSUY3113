@@ -21,16 +21,22 @@ ShaderProgram program;
 glm::mat4 viewMatrix, projectionMatrix, leftPlayerMatrix, rightPlayerMatrix, ballMatrix;
 
 //Left
+//float lx = -4.6;
+//float ly = 0;
 glm::vec3 left_position = glm::vec3(-4.6,0,0);
 glm::vec3 left_movement = glm::vec3(0,0,0);
 
 //right
+//float rx = 4.6;
+//float ry = 0;
 glm::vec3 right_position = glm::vec3(4.6,0,0);
 glm::vec3 right_movement = glm::vec3(0,0,0);
 
 //ball
+//float bx = 0;
+//float by = 0;
 glm::vec3 ball_position = glm::vec3(0,0,0);
-glm::vec3 ball_movement = glm::vec3(0,0,0);
+glm::vec3 ball_movement = glm::vec3(1.0f,0,0);
 
 float player_speed = 1.0f;
 
@@ -94,14 +100,13 @@ void Initialize() {
     
     leftTextureID = LoadTexture("CloudPixArt.png");
     rightTextureID = LoadTexture("CloudPixArt.png");
-    //ball
+    ballTextureID = LoadTexture("SunPixelArt.png");
     
 }
 
 void ProcessInput() {
     left_movement = glm::vec3(0);
     right_movement = glm::vec3(0);
-    //ball
     
     SDL_Event event;
     while (SDL_PollEvent(&event)){
@@ -128,15 +133,26 @@ void ProcessInput() {
     }
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     //only using up and down movement
-    if (keys[SDL_SCANCODE_UP]) {
+    if (keys[SDL_SCANCODE_W]) {
         left_movement.y = 1.0f;
     }
-    else if (keys[SDL_SCANCODE_DOWN]) {
+    else if (keys[SDL_SCANCODE_S]) {
         left_movement.y = -1.0f;
+    }
+    
+    if (keys[SDL_SCANCODE_UP]){
+        right_movement.y = 1.0f;
+    }
+    else if (keys[SDL_SCANCODE_DOWN]){
+        right_movement.y = -1.0f;
     }
     
     if (glm::length(left_movement) > 1.0f) {
         left_movement = glm::normalize(left_movement);
+    }
+    
+    if (glm::length(right_movement) > 1.0f) {
+        right_movement = glm::normalize(right_movement);
     }
 }
 
@@ -149,12 +165,61 @@ void Update() {
     
     //Add (direction* units per second * elapsed time)
     left_position += left_movement * player_speed * deltaTime;
-    //right
-    //ball
+    right_position += right_movement * player_speed * deltaTime;
+    ball_position += ball_movement * player_speed * deltaTime;
     
+    //collision detection
+    //checking for collision with left player
+    float lx_dist = fabs(left_position.x - ball_position.x) - ((2.0)/2.0f); //check width
+    float ly_dist = fabs(left_position.y - ball_position.y) - ((2.0)/2.0f); //check height
+    if (lx_dist < 0 && ly_dist < 0){ //colliding
+        ball_movement.x = -ball_movement.x;
+        if (ball_movement.y >= 0){
+            ball_movement.y = 1.0f;
+        }
+        if (ball_movement.y < 0){
+            ball_movement.y = -1.0f;
+        }
+    }
+    
+    //checking collision with right character
+    float rx_dist = fabs(right_position.x - ball_position.x) - ((2.0)/2.0f); //check w&h
+    float ry_dist = fabs(right_position.y - ball_position.y) - ((2.0)/2.0f);
+    if (rx_dist < 0 && ry_dist < 0){ //colliding
+        ball_movement.x = -ball_movement.x;
+        if (ball_movement.y >= 0){
+            ball_movement.y = 1.0f;
+        }
+        if (ball_movement.y < 0){
+            ball_movement.y = -1.0f;
+        }
+        
+    }
+    
+    //checking collision with sides
+    if (ball_position.x > 4.9 || ball_position.x < -4.9) {
+        ball_movement = glm::vec3(0,0,0);
+    }
+    if (ball_position.y > 3.70 || ball_position.y < -3.70){
+        ball_movement.y = -ball_movement.y;
+    }
+    
+    
+    //left
     leftPlayerMatrix = glm::mat4(1.0f);
     leftPlayerMatrix = glm::translate(leftPlayerMatrix, left_position);
     leftPlayerMatrix = glm::rotate(leftPlayerMatrix, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //turn left player 90 degrees
+    
+    //right
+    rightPlayerMatrix = glm::mat4(1.0f);
+    rightPlayerMatrix = glm::translate(rightPlayerMatrix, right_position);
+    rightPlayerMatrix = glm::rotate(rightPlayerMatrix, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //turn left player 90 degrees
+    
+    //ball
+    ballMatrix = glm::mat4(1.0f);
+    ballMatrix = glm::translate(ballMatrix, ball_position);
+    
+    
 }
 
 //Draw Matrix function
@@ -179,7 +244,10 @@ void Render() {
     glVertexAttribPointer(program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
     glEnableVertexAttribArray(program.texCoordAttribute);
     
+    //Object Matrices
     DrawMatrix(leftPlayerMatrix, leftTextureID);
+    DrawMatrix(rightPlayerMatrix, rightTextureID);
+    DrawMatrix(ballMatrix, ballTextureID);
     
     
     glDisableVertexAttribArray(program.positionAttribute);
