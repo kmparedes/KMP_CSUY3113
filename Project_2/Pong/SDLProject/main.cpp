@@ -65,7 +65,7 @@ GLuint LoadTexture(const char* filePath) {
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
-    displayWindow = SDL_CreateWindow("Let's Play Pong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    displayWindow = SDL_CreateWindow("Let's Play Pong!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
     
@@ -134,17 +134,37 @@ void ProcessInput() {
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     //only using up and down movement
     if (keys[SDL_SCANCODE_W]) {
-        left_movement.y = 1.0f;
+        if (left_position.y > 3.70){
+            left_movement.y = 0.0f;
+        }
+        else {
+            left_movement.y = 1.0f;
+        }
     }
     else if (keys[SDL_SCANCODE_S]) {
-        left_movement.y = -1.0f;
+        if (left_position.y < -3.75) {
+            left_movement.y = 0.0f;
+        }
+        else{
+            left_movement.y = -1.0f;
+        }
     }
     
     if (keys[SDL_SCANCODE_UP]){
-        right_movement.y = 1.0f;
+        if (right_position.y > 3.70){
+            right_movement.y = 0.0f;
+        }
+        else {
+            right_movement.y = 1.0f;
+        }
     }
     else if (keys[SDL_SCANCODE_DOWN]){
-        right_movement.y = -1.0f;
+        if (right_position.y < -3.75) {
+            right_movement.y = 0.0f;
+        }
+        else{
+            right_movement.y = -1.0f;
+        }
     }
     
     if (glm::length(left_movement) > 1.0f) {
@@ -209,11 +229,13 @@ void Update() {
     leftPlayerMatrix = glm::mat4(1.0f);
     leftPlayerMatrix = glm::translate(leftPlayerMatrix, left_position);
     leftPlayerMatrix = glm::rotate(leftPlayerMatrix, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //turn left player 90 degrees
+    //scale to make paddle bigger
     
     //right
     rightPlayerMatrix = glm::mat4(1.0f);
     rightPlayerMatrix = glm::translate(rightPlayerMatrix, right_position);
     rightPlayerMatrix = glm::rotate(rightPlayerMatrix, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //turn left player 90 degrees
+    //scale to make paddle bigger
     
     //ball
     ballMatrix = glm::mat4(1.0f);
