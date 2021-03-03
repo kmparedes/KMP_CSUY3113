@@ -21,24 +21,18 @@ ShaderProgram program;
 glm::mat4 viewMatrix, projectionMatrix, leftPlayerMatrix, rightPlayerMatrix, ballMatrix;
 
 //Left
-//float lx = -4.6;
-//float ly = 0;
 glm::vec3 left_position = glm::vec3(-4.6,0,0);
 glm::vec3 left_movement = glm::vec3(0,0,0);
 
 //right
-//float rx = 4.6;
-//float ry = 0;
 glm::vec3 right_position = glm::vec3(4.6,0,0);
 glm::vec3 right_movement = glm::vec3(0,0,0);
 
 //ball
-//float bx = 0;
-//float by = 0;
 glm::vec3 ball_position = glm::vec3(0,0,0);
-glm::vec3 ball_movement = glm::vec3(1.0f,0,0);
+glm::vec3 ball_movement = glm::vec3(0,0,0);
 
-float player_speed = 1.0f;
+float player_speed = 1.5f;
 
 GLuint leftTextureID, rightTextureID, ballTextureID;
 
@@ -91,7 +85,7 @@ void Initialize() {
     
     glUseProgram(program.programID);
     
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); //RGBa
+    glClearColor(0.62f, 0.78f, 0.882f, 1.0f); //RGBa
     
     glEnable(GL_BLEND);
     
@@ -138,7 +132,7 @@ void ProcessInput() {
             left_movement.y = 0.0f;
         }
         else {
-            left_movement.y = 1.0f;
+            left_movement.y = 1.5f;
         }
     }
     else if (keys[SDL_SCANCODE_S]) {
@@ -146,7 +140,7 @@ void ProcessInput() {
             left_movement.y = 0.0f;
         }
         else{
-            left_movement.y = -1.0f;
+            left_movement.y = -1.5f;
         }
     }
     
@@ -155,7 +149,7 @@ void ProcessInput() {
             right_movement.y = 0.0f;
         }
         else {
-            right_movement.y = 1.0f;
+            right_movement.y = 1.5f;
         }
     }
     else if (keys[SDL_SCANCODE_DOWN]){
@@ -163,9 +157,23 @@ void ProcessInput() {
             right_movement.y = 0.0f;
         }
         else{
-            right_movement.y = -1.0f;
+            right_movement.y = -1.5f;
         }
     }
+    
+    if (keys[SDL_SCANCODE_R]){ //Press R to restart game
+        left_position.y = 0;
+        right_position.y = 0;
+        ball_movement = glm::vec3(0,0,0);
+        ball_position = glm::vec3(0,0,0);
+    }
+    if (keys[SDL_SCANCODE_SPACE]){
+        if (ball_position.x == 0.0f){
+            ball_movement.x = 1.0f;
+        }
+    }
+    
+    
     
     if (glm::length(left_movement) > 1.0f) {
         left_movement = glm::normalize(left_movement);
@@ -194,12 +202,8 @@ void Update() {
     float ly_dist = fabs(left_position.y - ball_position.y) - ((2.0)/2.0f); //check height
     if (lx_dist < 0 && ly_dist < 0){ //colliding
         ball_movement.x = -ball_movement.x;
-        if (ball_movement.y >= 0){
-            ball_movement.y = 1.0f;
-        }
-        if (ball_movement.y < 0){
-            ball_movement.y = -1.0f;
-        }
+        float t = (ball_position.y - left_position.y) - 1.5f;
+        ball_movement.y = t;
     }
     
     //checking collision with right character
@@ -207,12 +211,9 @@ void Update() {
     float ry_dist = fabs(right_position.y - ball_position.y) - ((2.0)/2.0f);
     if (rx_dist < 0 && ry_dist < 0){ //colliding
         ball_movement.x = -ball_movement.x;
-        if (ball_movement.y >= 0){
-            ball_movement.y = 1.0f;
-        }
-        if (ball_movement.y < 0){
-            ball_movement.y = -1.0f;
-        }
+        float t = (ball_position.y - right_position.y) - 1.5f;
+        ball_movement.y = t;
+       
         
     }
     
@@ -229,13 +230,13 @@ void Update() {
     leftPlayerMatrix = glm::mat4(1.0f);
     leftPlayerMatrix = glm::translate(leftPlayerMatrix, left_position);
     leftPlayerMatrix = glm::rotate(leftPlayerMatrix, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //turn left player 90 degrees
-    //scale to make paddle bigger
+    leftPlayerMatrix = glm::scale(leftPlayerMatrix, glm::vec3(1.5f, 1.0f, 1.0f));
     
     //right
     rightPlayerMatrix = glm::mat4(1.0f);
     rightPlayerMatrix = glm::translate(rightPlayerMatrix, right_position);
     rightPlayerMatrix = glm::rotate(rightPlayerMatrix, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //turn left player 90 degrees
-    //scale to make paddle bigger
+    rightPlayerMatrix = glm::scale(rightPlayerMatrix, glm::vec3(1.5f, 1.0f, 1.0f));
     
     //ball
     ballMatrix = glm::mat4(1.0f);
