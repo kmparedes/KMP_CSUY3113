@@ -1,3 +1,16 @@
+/*
+ Katrina Mae Paredes
+ CS-UY 3113
+ Project 2 - Pong
+ 3 March 2021
+ 
+ Instructions:
+ Press spacebar to start the game.
+ Press R to reset the game.
+ Left Player: W & S
+ Right Player: Up & Down
+ */
+
 #define GL_SILENCE_DEPRECATION
 
 #ifdef _WINDOWS
@@ -202,8 +215,7 @@ void Update() {
     float ly_dist = fabs(left_position.y - ball_position.y) - ((2.0)/2.0f); //check height
     if (lx_dist < 0 && ly_dist < 0){ //colliding
         ball_movement.x = -ball_movement.x;
-        float t = (ball_position.y - left_position.y) - 1.5f;
-        ball_movement.y = t;
+        ball_movement.y = (ball_position.y - left_position.y) - 1.5f;
     }
     
     //checking collision with right character
@@ -211,8 +223,7 @@ void Update() {
     float ry_dist = fabs(right_position.y - ball_position.y) - ((2.0)/2.0f);
     if (rx_dist < 0 && ry_dist < 0){ //colliding
         ball_movement.x = -ball_movement.x;
-        float t = (ball_position.y - right_position.y) - 1.5f;
-        ball_movement.y = t;
+        ball_movement.y = (ball_position.y - right_position.y) - 1.5f;
        
         
     }
