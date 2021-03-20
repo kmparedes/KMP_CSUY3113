@@ -22,8 +22,8 @@ public:
     float width = 1;
     float height = 1;
     
-    bool jump = false;
-    float jumpPower = 0;
+    //bool jump = false;
+    //float jumpPower = 0;
     
     float speed;
     
@@ -50,12 +50,14 @@ public:
     bool collidedLeft = false;
     bool collidedRight = false;
     
+    int missionState = 0;
+    
     Entity();
     
-    bool CheckCollision(Entity *other);
-    void CheckCollisionY(Entity *objects, int objectCount);
-    void CheckCollisionX(Entity *objects, int objectCount);
-    void Update(float deltaTime, Entity *platform, int platformCount);
+    bool CheckCollision(Entity *other, int mS);
+    void CheckCollisionY(Entity *objects, int objectCount, int mS);
+    void CheckCollisionX(Entity *objects, int objectCount, int mS);
+    void Update(float deltaTime, Entity *platform, int platformCount, int mS);
     void Render(ShaderProgram *program);
     void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
     
