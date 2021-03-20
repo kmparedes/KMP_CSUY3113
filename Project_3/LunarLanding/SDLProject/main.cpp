@@ -15,7 +15,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#define PLATFORM_COUNT 1
+#define PLATFORM_COUNT 33
 #define GOAL_COUNT 2
 
 #include "Entity.hpp"
@@ -143,8 +143,10 @@ void Initialize() {
     state.ship = new Entity();
     state.ship->position = glm::vec3(0, 3.75, 0);
     state.ship->movement = glm::vec3(0);
-    state.ship->acceleration = glm::vec3(0, -0.1f, 0);; //never change. player always in freefall
-    state.ship->speed = 1.0f;
+    state.ship->acceleration = glm::vec3(0, -0.01f, 0);; //never change. player always in freefall
+    state.ship->speed = 0.9f;
+    state.ship->width = 0.70f;
+    state.ship->height = 0.70f;
     state.ship->textureID = LoadTexture("playerShip1_blue.png");
     
     state.ship->height = 1.0f;
@@ -154,14 +156,59 @@ void Initialize() {
     state.platform = new Entity[PLATFORM_COUNT];
     
     GLuint platformTextureID = LoadTexture("platformPack_tile001.png");
-    state.platform[0].textureID = platformTextureID;
+    for (int i = 0; i < PLATFORM_COUNT; i++) {
+        state.platform[i].textureID = platformTextureID;
+    }
+    //bottom
     state.platform[0].position = glm::vec3(0,-3.25,0);
+    state.platform[1].position = glm::vec3(1,-3.25,0);
+    state.platform[2].position = glm::vec3(2,-3.25,0);
+    state.platform[3].position = glm::vec3(3,-3.25,0);
+    state.platform[4].position = glm::vec3(4,-3.25,0);
+    state.platform[5].position = glm::vec3(5,-3.25,0);
+    state.platform[6].position = glm::vec3(-3,-3.25,0);
+    state.platform[7].position = glm::vec3(-4,-3.25,0);
+    state.platform[8].position = glm::vec3(-5,-3.25,0);
+    
+    //left
+    state.platform[9].position = glm::vec3(-5,-2.75,0);
+    state.platform[10].position = glm::vec3(-5,-1.75,0);
+    state.platform[11].position = glm::vec3(-5, -0.75,0);
+    state.platform[12].position = glm::vec3(-5, 0.25,0);
+    state.platform[13].position = glm::vec3(-5, 1.25,0);
+    state.platform[14].position = glm::vec3(-5, 2.25,0);
+    state.platform[15].position = glm::vec3(-5, 3.25,0);
+    
+    //right
+    state.platform[16].position = glm::vec3(5,-2.75,0);
+    state.platform[17].position = glm::vec3(5,-1.75,0);
+    state.platform[18].position = glm::vec3(5, -0.75,0);
+    state.platform[19].position = glm::vec3(5, 0.25,0);
+    state.platform[20].position = glm::vec3(5, 1.25,0);
+    state.platform[21].position = glm::vec3(5, 2.25,0);
+    state.platform[22].position = glm::vec3(5, 3.25,0);
+    
+    //obstacles
+    state.platform[23].position = glm::vec3(-1, 2.25,0);
+    state.platform[24].position = glm::vec3(-2, 2.25,0);
+    state.platform[25].position = glm::vec3(-3, 2.25,0);
+    
+    state.platform[26].position = glm::vec3(2, 1.25,0);
+    state.platform[27].position = glm::vec3(3, 1.25,0);
+    state.platform[28].position = glm::vec3(4, 1.25,0);
+    
+    state.platform[29].position = glm::vec3(-2.5, 0.25,0);
+    state.platform[30].position = glm::vec3(-3.5, 0.25,0);
+    
+    state.platform[31].position = glm::vec3(-3, -1.75,0);
+    state.platform[32].position = glm::vec3(0, -1.75,0);
+   
     
     for (int i = 0; i < PLATFORM_COUNT; i++) { //update platforms one time
         state.platform[i].Update(0, NULL, 0, 0);
     }
     
-    //initializ goal
+    //initialize goal
     state.goal = new Entity[GOAL_COUNT];
     
     GLuint goalTextureID = LoadTexture("platformPack_tile007.png");
@@ -215,7 +262,7 @@ void ProcessInput() {
     
     if (keys[SDL_SCANCODE_LEFT]) {
         state.ship->movement.x = -0.79f;
-        state.ship->acceleration.x -= 0.45f;
+        state.ship->acceleration.x += -0.45f;
     }
     else if (keys[SDL_SCANCODE_RIGHT]) {
         state.ship->movement.x = 0.79f;
