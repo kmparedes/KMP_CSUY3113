@@ -17,9 +17,9 @@
 		DBDF1B6B2323DEEA007CECB1 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDF1B682323DEEA007CECB1 /* SDL2_mixer.framework */; };
 		FB12633F26044A5C00EAB95D /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB12633D26044A5C00EAB95D /* Entity.cpp */; };
 		FB12634126055F3100EAB95D /* playerShip1_blue.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB12634026055F1200EAB95D /* playerShip1_blue.png */; };
-		FB12634426056C4700EAB95D /* platformPack_tile001.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB12634326056C4000EAB95D /* platformPack_tile001.png */; };
 		FB12634526056C4A00EAB95D /* font1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB12634226056C2400EAB95D /* font1.png */; };
 		FB1263472605769300EAB95D /* platformPack_tile007.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB1263462605754300EAB95D /* platformPack_tile007.png */; };
+		FB12634B2605A74100EAB95D /* platformPack_tile041.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB12634A2605A73A00EAB95D /* platformPack_tile041.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,8 +31,8 @@
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
 				FB12634126055F3100EAB95D /* playerShip1_blue.png in CopyFiles */,
-				FB12634426056C4700EAB95D /* platformPack_tile001.png in CopyFiles */,
 				FB1263472605769300EAB95D /* platformPack_tile007.png in CopyFiles */,
+				FB12634B2605A74100EAB95D /* platformPack_tile041.png in CopyFiles */,
 				FB12634526056C4A00EAB95D /* font1.png in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +58,7 @@
 		FB12634226056C2400EAB95D /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
 		FB12634326056C4000EAB95D /* platformPack_tile001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile001.png; sourceTree = "<group>"; };
 		FB1263462605754300EAB95D /* platformPack_tile007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile007.png; sourceTree = "<group>"; };
+		FB12634A2605A73A00EAB95D /* platformPack_tile041.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile041.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +97,7 @@
 		DBDF1B512323DE3F007CECB1 /* SDLProject */ = {
 			isa = PBXGroup;
 			children = (
+				FB12634A2605A73A00EAB95D /* platformPack_tile041.png */,
 				FB1263462605754300EAB95D /* platformPack_tile007.png */,
 				FB12634326056C4000EAB95D /* platformPack_tile001.png */,
 				FB12634226056C2400EAB95D /* font1.png */,

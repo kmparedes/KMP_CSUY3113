@@ -15,7 +15,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#define PLATFORM_COUNT 33
+#define PLATFORM_COUNT 35
 #define GOAL_COUNT 2
 
 #include "Entity.hpp"
@@ -113,7 +113,7 @@ void DrawText(ShaderProgram *program, GLuint fontTextureID, std::string text, fl
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
-    displayWindow = SDL_CreateWindow("Textured!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    displayWindow = SDL_CreateWindow("Lunar Landing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
     
@@ -155,7 +155,7 @@ void Initialize() {
     //Intialize Platform
     state.platform = new Entity[PLATFORM_COUNT];
     
-    GLuint platformTextureID = LoadTexture("platformPack_tile001.png");
+    GLuint platformTextureID = LoadTexture("platformPack_tile041.png");
     for (int i = 0; i < PLATFORM_COUNT; i++) {
         state.platform[i].textureID = platformTextureID;
     }
@@ -201,7 +201,9 @@ void Initialize() {
     state.platform[30].position = glm::vec3(-3.5, 0.25,0);
     
     state.platform[31].position = glm::vec3(-3, -1.75,0);
-    state.platform[32].position = glm::vec3(0, -1.75,0);
+    state.platform[32].position = glm::vec3(-4, -1.75,0);
+    state.platform[33].position = glm::vec3(0.5, -0.75,0);
+    state.platform[34].position = glm::vec3(1.5, -0.75,0);
    
     
     for (int i = 0; i < PLATFORM_COUNT; i++) { //update platforms one time
@@ -316,11 +318,11 @@ void Render() {
     }
     
     if (state.ship->acceleration == glm::vec3(0) && state.ship->missionState == 2) {
-        DrawText(&program, fontTextureID, "MISSION SUCCESSFUL", 0.5, -0.15f, glm::vec3(-4.25f, 3, 0));
+        DrawText(&program, fontTextureID, "MISSION SUCCESSFUL", 0.8, -0.16f, glm::vec3(-4.3f, 0, 0));
     }
     
     if (state.ship->acceleration == glm::vec3(0) && state.ship->missionState == 1) {
-        DrawText(&program, fontTextureID, "MISSION FAIL", 0.5, -0.15f, glm::vec3(-4.25f, 3, 0));
+        DrawText(&program, fontTextureID, "MISSION FAIL", 0.9, -0.15f, glm::vec3(-4.25f, 0, 0));
     }
     
     state.ship->Render(&program);
