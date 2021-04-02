@@ -25,7 +25,6 @@ struct GameState {
     Entity *platforms;
     Entity *enemies;
     Entity *doors;
-    Entity *lastDoor;
 };
 
 GameState state;
@@ -147,9 +146,9 @@ void Initialize() {
     //Initialize Player
     state.player = new Entity();
     state.player->entityType = PLAYER;
-    state.player->position = glm::vec3(0, -1, 0);
+    state.player->position = glm::vec3(-4, 4.0f, 0);
     state.player->movement = glm::vec3(0);
-    state.player->acceleration = glm::vec3(0, -9.81, 0); //player always in freefall
+    state.player->acceleration = glm::vec3(0, -9.8, 0); //player always in freefall
     state.player->speed = 1.5f;
     state.player->textureID = LoadTexture("george_0.png");
     state.player->animRight = new int[4] {3, 7, 11, 15};
@@ -173,25 +172,26 @@ void Initialize() {
     //Intialize Platforms
     state.platforms = new Entity[PLATFORM_COUNT];
     
-    GLuint platformTextureID = LoadTexture("platformPack_tile001.png");
+    GLuint platformTextureID = LoadTexture("platformPack_tile025.png");
     
     for (int i = 0; i < PLATFORM_COUNT; i++) {
         state.platforms[i].entityType = PLATFORM;
         state.platforms[i].textureID = platformTextureID;
+       
         
     }
-    //level 1
+    //level 3
     for (int i = 0; i < 11; i++) {
-        state.platforms[i].position = glm::vec3(-5 + i, -3.50f, 0);
+        state.platforms[i].position = glm::vec3(-5 + i, -3.75f, 0);
     }
     //level 2 blocks: 11-22
     for (int i = 11; i < 22; i ++) {
-        state.platforms[i].position = glm::vec3(-5 + (21-i), -0.75f, 0);
+        state.platforms[i].position = glm::vec3(-5 + (21-i), -1.0f, 0);
     }
     
-    //level 3 blocks: 22-33
+    //level 1 blocks: 22-33
     for (int i = 22; i < 33; i ++) {
-        state.platforms[i].position = glm::vec3(-5 + (32-i), 2.00f, 0);
+        state.platforms[i].position = glm::vec3(-5 + (32-i), 1.75f, 0);
     }
 
     for (int i = 0; i < PLATFORM_COUNT; i++) { //update platforms one time
@@ -205,25 +205,44 @@ void Initialize() {
     for (int i = 0; i < DOOR_COUNT; i++) {
         state.doors[i].entityType = DOOR;
         state.doors[i].textureID = doorTextureID;
+        state.doors[i].width = 0.2f;
+        state.doors[i].height = 0.2f;
+        
     }
-    state.doors[0].position = glm::vec3(4, 3.0f, 0);
-    state.doors[1].position = glm::vec3(-4, 0.25f, 0);
+    state.doors[0].position = glm::vec3(4.25, 2.75f, 0);
+    state.doors[1].position = glm::vec3(-4.25, 0.0f, 0);
     
     for (int i = 0; i < DOOR_COUNT; i++) {
         state.doors[i].Update(0, NULL, NULL, 0);
     }
     
     
-    //last door to win game
-    state.lastDoor = new Entity();
-    state.lastDoor->entityType = DOOR;
-    state.lastDoor->textureID = LoadTexture("platformPack_tile051.png");
-    
-    state.lastDoor->position = glm::vec3(4, -2.50f, 0);
-    state.lastDoor->Update(0, NULL, NULL, 0);
-    
-    
     //Intialize Enemies
+    state.enemies = new Entity[ENEMY_COUNT];
+    GLuint enemyTextureID = LoadTexture("pacmanGhost.png");
+    
+    for (int i = 0; i < ENEMY_COUNT; i++) {
+        state.enemies[i].entityType = ENEMY;
+        state.enemies[i].speed = 1;
+        state.enemies[i].textureID = enemyTextureID;
+        state.enemies[i].width = 0.25;
+        state.enemies[i].height = 0.25;
+    }
+    
+    state.enemies[0].position = glm::vec3(0, 2.7f, 0);
+    state.enemies[0].aiType = WALKER;
+    state.enemies[0].aiState = WALKING;
+    state.enemies[0].movement = glm::vec3(-1,0,0);
+
+    state.enemies[1].position = glm::vec3(0);
+    state.enemies[1].aiType = WAITANDGO;
+    state.enemies[1].aiState = IDLE;
+    
+    state.enemies[2].position = glm::vec3(0, -2.50f, 0);
+    state.enemies[2].aiType = ATTACKER;
+    state.enemies[2].aiState = ATTACKING;
+    state.enemies[2].acceleration = glm::vec3(0, -5.0f, 0);
+    state.enemies[2].jumpPower = 3.0f;
     
     //text
     fontTextureID = LoadTexture("font1.png");
@@ -293,12 +312,21 @@ void Update() {
     
     while (deltaTime >= FIXED_TIMESTEP) {
         //Update. Notice it's FIXED_TIMESTEP. Not deltaTime
+        
+        
+        for (int i = 0; i < DOOR_COUNT; i++) {
+            state.player->DoorTransport(&state.doors[i]);
+        }
+        
         state.player->Update(FIXED_TIMESTEP, state.player, state.platforms, PLATFORM_COUNT);
-        /*
+        
+        state.player->loseGame(state.enemies, ENEMY_COUNT);
+        state.player->JumpAttack(state.enemies, ENEMY_COUNT);
+        
         for (int i = 0; i < ENEMY_COUNT; i++) {
             state.enemies[i].Update(FIXED_TIMESTEP, state.player, state.platforms, PLATFORM_COUNT);
         }
-        */
+        
         deltaTime -= FIXED_TIMESTEP;
     }
     
@@ -316,15 +344,18 @@ void Render() {
         state.doors[i].Render(&program);
     }
     
-    state.lastDoor->Render(&program);
-    /* for (int i = 0; i < ENEMY_COUNT; i++) {
+    
+    for (int i = 0; i < ENEMY_COUNT; i++) {
         state.enemies [i].Render(&program);
     }
-    */
     
     state.player->Render(&program);
     
-    DrawText(&program, fontTextureID, "Lives: " + std::to_string(3), 0.5f, -0.25f, glm::vec3(-3.75f, 3.3, 0));
+    if (!state.player->isActive){
+        DrawText(&program, fontTextureID, "You Lose", 0.5f, -0.25f, glm::vec3(0, 0, 0));
+    }
+    
+    //DrawText(&program, fontTextureID, "Lives: " + std::to_string(3), 0.5f, -0.25f, glm::vec3(-3.75f, 3.3, 0));
     
     SDL_GL_SwapWindow(displayWindow);
 }

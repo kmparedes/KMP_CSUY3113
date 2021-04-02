@@ -22,7 +22,7 @@ bool Entity::CheckCollision(Entity *other){ //check if we collide with something
     float xdist = fabs(position.x - other->position.x) - ((width + other->width) /2.0f);
     float ydist = fabs(position.y - other->position.y) - ((height + other->height) /2.0f);
     
-    if (xdist < 0 && ydist <0){
+    if (xdist < 0 && ydist < 0){
         return true;
     }
     
@@ -55,8 +55,11 @@ void Entity::CheckCollisionsX(Entity *objects, int objectCount){
         Entity *object = &objects[i];
         
         if (CheckCollision(object)){
+            
             float xdist = fabs(position.x - object->position.x);
             float penetrationX = fabs(xdist - (width/2.0f) - (object->width/2.0f));
+            
+            
             if (velocity.x > 0) {
                 position.x -= penetrationX;
                 velocity.x = 0;
@@ -71,15 +74,65 @@ void Entity::CheckCollisionsX(Entity *objects, int objectCount){
     }
 }
 
-void Entity::AIWalker(){
-    movement = glm::vec3(-1,0,0);
+void Entity::DoorTransport(Entity *door){ //Transport to next level
+    if (CheckCollision(door) == true) {
+        position.y -= 2.0f;
+    }
 }
+ //Gameplay
+void Entity::loseGame(Entity *objects, int objectCount){
+    for (int i = 0; i < objectCount; i++){
+        Entity *object = &objects[i];
+        
+        if (CheckCollision(object)) {
+            float xdist = fabs(position.x - object->position.x) - ((width + object->width) /2.0f);
+            if (xdist < 0 && (position.y < object->position.y)){
+                isActive = false;
+            }
+        }
+    }
+}
+
+void Entity::JumpAttack(Entity *objects, int objectCount){
+    for (int i = 0; i < objectCount; i++){
+        Entity *object = &objects[i];
+        
+        if (CheckCollision(object)) {
+            if (position.y > object->position.y) {
+                object->isActive = false;
+            }
+        }
+    }
+}
+
+void Entity::AIWalker(){
+
+    if (position.x < -5) {
+        movement = glm::vec3(1,0,0);
+    }
+    else if (position.x > 5){
+        movement = glm::vec3(-1,0,0);
+    }
+    
+}
+
+void Entity::AIAttack(Entity *player){
+    if (position.y < -3){
+        velocity.y += jumpPower;
+    }
+}
+
 
 void Entity::AIWaitAndGo(Entity *player){
     switch(aiState){
         case IDLE:
-            if (glm::distance(position, player->position) < 3.0f){
-                aiState = WALKING;
+            if (glm::distance(position, player->position) < 2.0f){
+                if (aiType == WAITANDGO){
+                    aiState = WALKING;
+                }
+                if (aiType == ATTACKER){
+                    aiState = ATTACKING;
+                }
             }
             break;
         case WALKING:
@@ -103,6 +156,10 @@ void Entity::AI(Entity *player){
             break;
         case WAITANDGO:
             AIWaitAndGo(player);
+            break;
+        case ATTACKER:
+            AIAttack(player);
+            break;
     }
 }
 
@@ -140,8 +197,8 @@ void Entity::Update(float deltaTime, Entity *player, Entity *platform, int platf
     }
     
     if (jump){
-        jump = false;
         velocity.y += jumpPower; //adding instantly jump power
+        jump = false;
     }
     
     velocity.x = movement.x * speed; //instant velocity. Let them move

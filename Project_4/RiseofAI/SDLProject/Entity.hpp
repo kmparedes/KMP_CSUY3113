@@ -11,9 +11,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
 
-enum EntityType {PLAYER, PLATFORM, ENEMY, DOOR};
+enum EntityType {PLAYER, PLATFORM, ENEMY, DOOR, WIN};
 
-enum AIType {WALKER, WAITANDGO};
+enum AIType {WALKER, WAITANDGO, ATTACKER};
 enum AIState {IDLE, WALKING, ATTACKING};
 
 class Entity {
@@ -68,7 +68,16 @@ public:
     void Render(ShaderProgram *program);
     void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
     
+    //Door Functions
+    void DoorTransport(Entity *door);
+    
+    //Gameplay
+    void loseGame(Entity *objects, int objectCount);
+    void JumpAttack(Entity *objects, int objectCount);
+    
+    //AI Functions
     void AI(Entity *player);
     void AIWalker();
     void AIWaitAndGo(Entity *player);
+    void AIAttack(Entity *player);
 };

@@ -21,6 +21,9 @@
 		FB7D3C6E2615799D00788514 /* font1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB7D3C6D2615799900788514 /* font1.png */; };
 		FB7D3C702615827A00788514 /* platformPack_tile049.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB7D3C6F2615825400788514 /* platformPack_tile049.png */; };
 		FB7D3C72261582AE00788514 /* platformPack_tile051.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB7D3C71261582AA00788514 /* platformPack_tile051.png */; };
+		FB9B8B872616773100C9E660 /* ctg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB9B8B862616772B00C9E660 /* ctg.png */; };
+		FBBC938B2616B1F3001DA456 /* pacmanGhost.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBBC938A2616B1ED001DA456 /* pacmanGhost.png */; };
+		FBBC938D2616B302001DA456 /* platformPack_tile025.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBBC938C2616B2F8001DA456 /* platformPack_tile025.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +39,9 @@
 				FB7D3C6E2615799D00788514 /* font1.png in CopyFiles */,
 				FB7D3C702615827A00788514 /* platformPack_tile049.png in CopyFiles */,
 				FB7D3C72261582AE00788514 /* platformPack_tile051.png in CopyFiles */,
+				FB9B8B872616773100C9E660 /* ctg.png in CopyFiles */,
+				FBBC938B2616B1F3001DA456 /* pacmanGhost.png in CopyFiles */,
+				FBBC938D2616B302001DA456 /* platformPack_tile025.png in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +67,9 @@
 		FB7D3C6D2615799900788514 /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
 		FB7D3C6F2615825400788514 /* platformPack_tile049.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile049.png; sourceTree = "<group>"; };
 		FB7D3C71261582AA00788514 /* platformPack_tile051.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile051.png; sourceTree = "<group>"; };
+		FB9B8B862616772B00C9E660 /* ctg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctg.png; sourceTree = "<group>"; };
+		FBBC938A2616B1ED001DA456 /* pacmanGhost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pacmanGhost.png; sourceTree = "<group>"; };
+		FBBC938C2616B2F8001DA456 /* platformPack_tile025.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile025.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +113,9 @@
 				FB7D3C6D2615799900788514 /* font1.png */,
 				FB7D3C6F2615825400788514 /* platformPack_tile049.png */,
 				FB7D3C71261582AA00788514 /* platformPack_tile051.png */,
+				FBBC938C2616B2F8001DA456 /* platformPack_tile025.png */,
+				FB9B8B862616772B00C9E660 /* ctg.png */,
+				FBBC938A2616B1ED001DA456 /* pacmanGhost.png */,
 				DBDF1B5B2323DE8D007CECB1 /* glm */,
 				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
 				DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */,
