@@ -1,3 +1,16 @@
+/*
+ Katrina Mae Paredes
+ Rise of the AI
+ 
+ Instructions:
+ Jump on enemies to get rid of enemies. Defeat all enemies to win
+ 
+ Keys:
+ <- Left
+ -> Right
+ [SPACE] Jump
+ 
+ */
 #define GL_SILENCE_DEPRECATION
 
 #ifdef _WINDOWS
@@ -36,6 +49,8 @@ ShaderProgram program;
 glm::mat4 viewMatrix, modelMatrix, projectionMatrix;
 
 GLuint fontTextureID;
+
+
 
 
 GLuint LoadTexture(const char* filePath) {
@@ -113,6 +128,21 @@ void DrawText(ShaderProgram *program, GLuint fontTextureID, std::string text, fl
     glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
+bool win(){ //check to see if player defeated all enemies
+    int defeatedEnemies = 0;
+    for (int i = 0; i < ENEMY_COUNT; i++) {
+        if (!state.enemies[i].isActive) {
+            defeatedEnemies += 1;
+        }
+    }
+    if (defeatedEnemies == ENEMY_COUNT){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
     displayWindow = SDL_CreateWindow("Rise of AI", SDL_WINDOWPOS_CENTERED,
@@ -141,6 +171,7 @@ void Initialize() {
     glEnable(GL_BLEND);
     
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     
     //Initialize Game Objects
     //Initialize Player
@@ -223,7 +254,7 @@ void Initialize() {
     
     for (int i = 0; i < ENEMY_COUNT; i++) {
         state.enemies[i].entityType = ENEMY;
-        state.enemies[i].speed = 1;
+        state.enemies[i].speed = 1.6;
         state.enemies[i].textureID = enemyTextureID;
         state.enemies[i].width = 0.25;
         state.enemies[i].height = 0.25;
@@ -232,7 +263,7 @@ void Initialize() {
     state.enemies[0].position = glm::vec3(0, 2.7f, 0);
     state.enemies[0].aiType = WALKER;
     state.enemies[0].aiState = WALKING;
-    state.enemies[0].movement = glm::vec3(-1,0,0);
+    state.enemies[0].movement = glm::vec3(1,0,0);
 
     state.enemies[1].position = glm::vec3(0);
     state.enemies[1].aiType = WAITANDGO;
@@ -246,6 +277,7 @@ void Initialize() {
     
     //text
     fontTextureID = LoadTexture("font1.png");
+    
 }
 
 void ProcessInput() {
@@ -292,6 +324,7 @@ void ProcessInput() {
     if (glm::length(state.player->movement) > 1.0f) {
         state.player->movement = glm::normalize(state.player->movement);
     }
+    
 }
 
 
@@ -344,7 +377,6 @@ void Render() {
         state.doors[i].Render(&program);
     }
     
-    
     for (int i = 0; i < ENEMY_COUNT; i++) {
         state.enemies [i].Render(&program);
     }
@@ -352,10 +384,14 @@ void Render() {
     state.player->Render(&program);
     
     if (!state.player->isActive){
-        DrawText(&program, fontTextureID, "You Lose", 0.5f, -0.25f, glm::vec3(0, 0, 0));
+        DrawText(&program, fontTextureID, "YOU LOSE", 0.5f, -0.25f, glm::vec3(0, 0, 0));
     }
     
+    if (win()) {
+        DrawText(&program, fontTextureID, "YOU WIN!", 0.5f, -0.25f, glm::vec3(0, 0, 0));
+    }
     //DrawText(&program, fontTextureID, "Lives: " + std::to_string(3), 0.5f, -0.25f, glm::vec3(-3.75f, 3.3, 0));
+    
     
     SDL_GL_SwapWindow(displayWindow);
 }
