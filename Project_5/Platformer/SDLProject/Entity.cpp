@@ -141,7 +141,12 @@ void Entity::CheckCollisionsX(Entity *objects, int objectCount){
 }
 
 void Entity::AIWalker(){
-    movement = glm::vec3(-1,0,0);
+    if (position.x < (startX - moveLeft)) {
+        movement = glm::vec3(1,0,0);
+    }
+    else if (position.x > (startX + moveRight)){
+        movement = glm::vec3(-1,0,0);
+    }
 }
 
 void Entity::AIWaitAndGo(Entity *player){

@@ -30,10 +30,10 @@ public:
     glm::vec3 velocity;
     
     //For AIs
-    /*int startX;
-    int startY;
-    int moveLeft;
-    int moveRight;*/
+    int startX = 0;
+    int startY = 0;
+    int moveLeft = 0;
+    int moveRight = 0;
     
     float width = 1; //assume w & h of object is 1 X 1
     float height = 1;

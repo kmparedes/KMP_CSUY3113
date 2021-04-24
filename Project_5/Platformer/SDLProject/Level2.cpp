@@ -35,7 +35,7 @@ void Level2::Initialize() {
     //Initialize Player
     state.player = new Entity();
     state.player->entityType = PLAYER;
-    state.player->position = glm::vec3(5, 0, 0);
+    state.player->position = glm::vec3(2, 0, 0);
     state.player->movement = glm::vec3(0);
     state.player->acceleration = glm::vec3(0, -9.81f, 0); //never change. player always in freefall
     state.player->speed = 2.0f;
@@ -60,14 +60,18 @@ void Level2::Initialize() {
     
     
     state.enemies = new Entity[LEVEL2_ENEMYCOUNT];
-    GLuint enemyTextureID = Util::LoadTexture("ctg.png");
+    GLuint enemyTextureID = Util::LoadTexture("pacmanGhost.png");
     state.enemies[0].entityType = ENEMY;
     state.enemies[0].textureID = enemyTextureID;
-    state.enemies[0].position  = glm::vec3(4, -2.25f, 0);
+    state.enemies[0].startX = 12;
+    state.enemies[0].moveLeft = 1;
+    state.enemies[0].moveRight = 2;
+    state.enemies[0].position  = glm::vec3(12, -1, 0);
     state.enemies[0].speed = 1;
-    state.enemies[0].aiType = WAITANDGO;
-    state.enemies[0].aiState = IDLE;
-    state.enemies[0].isActive = false;
+    state.enemies[0].aiType = WALKER;
+    state.enemies[0].aiState = WALKING;
+    state.enemies[0].movement = glm::vec3(1,0,0);
+    state.enemies[0].isActive = true;
 }
 
 void Level2::Update(float deltaTime) {
@@ -76,10 +80,17 @@ void Level2::Update(float deltaTime) {
     if (state.player->CheckCollision(state.door)) {
         state.nextScene = 3;
     }
+    
+    for (int i = 0; i < LEVEL2_ENEMYCOUNT; i++) {
+        state.enemies[i].Update(deltaTime, state.player, state.enemies, LEVEL2_ENEMYCOUNT, state.map);
+    }
 }
 
 void Level2::Render(ShaderProgram *program) {
     state.map->Render(program);
     state.door->Render(program);
+    for (int i = 0; i < LEVEL2_ENEMYCOUNT; i++) {
+        state.enemies [i].Render(program);
+    }
     state.player->Render(program);
 }

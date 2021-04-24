@@ -11,9 +11,9 @@ unsigned int level1_data[] =
 {
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 3,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 3,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3,
+    3, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 3,
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
     3, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
     3, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3
@@ -31,7 +31,7 @@ void Level1::Initialize() {
     //Initialize Door
     state.door = new Entity();
     state.door->entityType = DOOR;
-    state.door->position = glm::vec3(10,-1,0);
+    state.door->position = glm::vec3(8,-1,0);
     state.door->width = 0.2f;
     state.door->height = 0.2f;
     state.door->textureID = Util::LoadTexture("platformPack_tile049.png");
@@ -69,11 +69,17 @@ void Level1::Initialize() {
     GLuint enemyTextureID = Util::LoadTexture("pacmanGhost.png");
     state.enemies[0].entityType = ENEMY;
     state.enemies[0].textureID = enemyTextureID;
-    state.enemies[0].position  = glm::vec3(4, -2.25f, 0);
+    state.enemies[0].height = 0.8f;
+    state.enemies[0].width = 0.8f;
+    state.enemies[0].startX = 12;
+    state.enemies[0].moveLeft = 4;
+    state.enemies[0].moveRight = 5;
+    state.enemies[0].position  = glm::vec3(12, -5, 0);
     state.enemies[0].speed = 1;
-    state.enemies[0].aiType = WAITANDGO;
-    state.enemies[0].aiState = IDLE;
-    state.enemies[0].isActive = false;
+    state.enemies[0].aiType = WALKER;
+    state.enemies[0].aiState = WALKING;
+    state.enemies[0].movement = glm::vec3(1,0,0);
+    state.enemies[0].isActive = true;
 }
 
 void Level1::Update(float deltaTime) {
@@ -82,11 +88,18 @@ void Level1::Update(float deltaTime) {
     if (state.player->CheckCollision(state.door)) {
         state.nextScene = 2;
     }
+    
+    for (int i = 0; i < LEVEL1_ENEMYCOUNT; i++) {
+        state.enemies[i].Update(deltaTime, state.player, state.enemies, LEVEL1_ENEMYCOUNT, state.map);
+    }
 }
 
 void Level1::Render(ShaderProgram *program) {
     state.map->Render(program);
     state.door->Render(program);
+    for (int i = 0; i < LEVEL1_ENEMYCOUNT; i++) {
+        state.enemies [i].Render(program);
+    }
     state.player->Render(program);
     Util::DrawText(program, fontTextureID, "Text ", 1.0f, -0.5f, glm::vec3(1, -1, 0));
 
