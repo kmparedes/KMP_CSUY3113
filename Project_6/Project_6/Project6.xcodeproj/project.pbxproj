@@ -16,6 +16,8 @@
 		DBDF1B6A2323DEEA007CECB1 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDF1B672323DEEA007CECB1 /* SDL2_image.framework */; };
 		DBDF1B6B2323DEEA007CECB1 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDF1B682323DEEA007CECB1 /* SDL2_mixer.framework */; };
 		FB1263362602B54C00EAB95D /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB1263342602B54C00EAB95D /* Entity.cpp */; };
+		FB1509EE264F86F600FED1BD /* WinGrandPiano.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB1509ED264F86F100FED1BD /* WinGrandPiano.wav */; };
+		FB1509F2264F902800FED1BD /* myFont.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB1509F1264F902300FED1BD /* myFont.png */; };
 		FBC5B0432627EECF00FCF109 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBC5B0412627EECF00FCF109 /* Map.cpp */; };
 		FBD14436262F8F0A00F85726 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBD14434262F8F0A00F85726 /* Util.cpp */; };
 		FBD14439262FC5F600F85726 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBD14437262FC5F600F85726 /* Scene.cpp */; };
@@ -25,6 +27,7 @@
 		FBD7159B264CC67E000D647C /* pacmanGhost.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBD7159A264CC66F000D647C /* pacmanGhost.png */; };
 		FBD7159E264CCEF4000D647C /* mapTile_100.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBD7159C264CCD20000D647C /* mapTile_100.png */; };
 		FBD715A0264CD322000D647C /* Wholesome.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBD7159F264CD318000D647C /* Wholesome.mp3 */; };
+		FBEA98F3264F7A4500D1EDDC /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FBEA98F1264F7A4500D1EDDC /* Menu.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +43,8 @@
 				FBD7159B264CC67E000D647C /* pacmanGhost.png in CopyFiles */,
 				FBD7159E264CCEF4000D647C /* mapTile_100.png in CopyFiles */,
 				FBD715A0264CD322000D647C /* Wholesome.mp3 in CopyFiles */,
+				FB1509F2264F902800FED1BD /* myFont.png in CopyFiles */,
+				FB1509EE264F86F600FED1BD /* WinGrandPiano.wav in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +65,8 @@
 		DBDF1B682323DEEA007CECB1 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		FB1263342602B54C00EAB95D /* Entity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		FB1263352602B54C00EAB95D /* Entity.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
+		FB1509ED264F86F100FED1BD /* WinGrandPiano.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = WinGrandPiano.wav; sourceTree = "<group>"; };
+		FB1509F1264F902300FED1BD /* myFont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myFont.png; sourceTree = "<group>"; };
 		FBC5B0412627EECF00FCF109 /* Map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		FBC5B0422627EECF00FCF109 /* Map.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Map.hpp; sourceTree = "<group>"; };
 		FBD14434262F8F0A00F85726 /* Util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
@@ -73,6 +80,8 @@
 		FBD7159A264CC66F000D647C /* pacmanGhost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pacmanGhost.png; sourceTree = "<group>"; };
 		FBD7159C264CCD20000D647C /* mapTile_100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapTile_100.png; sourceTree = "<group>"; };
 		FBD7159F264CD318000D647C /* Wholesome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Wholesome.mp3; sourceTree = "<group>"; };
+		FBEA98F1264F7A4500D1EDDC /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
+		FBEA98F2264F7A4500D1EDDC /* Menu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Menu.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +120,8 @@
 		DBDF1B512323DE3F007CECB1 /* SDLProject */ = {
 			isa = PBXGroup;
 			children = (
+				FB1509F1264F902300FED1BD /* myFont.png */,
+				FB1509ED264F86F100FED1BD /* WinGrandPiano.wav */,
 				FBD7159F264CD318000D647C /* Wholesome.mp3 */,
 				FBD7159C264CCD20000D647C /* mapTile_100.png */,
 				FBD71598264CC5A5000D647C /* betty.png */,
@@ -132,6 +143,8 @@
 				FBD14438262FC5F600F85726 /* Scene.hpp */,
 				FBD1443A262FCC1800F85726 /* Level1.cpp */,
 				FBD1443B262FCC1800F85726 /* Level1.hpp */,
+				FBEA98F1264F7A4500D1EDDC /* Menu.cpp */,
+				FBEA98F2264F7A4500D1EDDC /* Menu.hpp */,
 			);
 			path = SDLProject;
 			sourceTree = "<group>";
@@ -210,6 +223,7 @@
 				FBC5B0432627EECF00FCF109 /* Map.cpp in Sources */,
 				DBDF1B5E2323DE8D007CECB1 /* ShaderProgram.cpp in Sources */,
 				FBD14436262F8F0A00F85726 /* Util.cpp in Sources */,
+				FBEA98F3264F7A4500D1EDDC /* Menu.cpp in Sources */,
 				FBD1443C262FCC1800F85726 /* Level1.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

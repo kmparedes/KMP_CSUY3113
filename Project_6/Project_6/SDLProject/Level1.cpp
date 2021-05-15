@@ -5,6 +5,9 @@
 
 #define LEVEL1_ENEMYCOUNT 3
 
+bool win;
+
+GLuint fontTextureID;
 unsigned int level1_data[] =
 {
     23, 23, 23, 23, 23, 23, 23, 23, 0, 0, 23,
@@ -15,7 +18,7 @@ unsigned int level1_data[] =
     23, 23, 23, 23, 23, 23, 23, 0, 0, 0, 23,
     23, 23, 23, 23, 23, 23, 23, 0, 0, 0, 23,
     23, 0, 0, 0, 23, 23, 23, 23, 23, 0, 23,
-    23, 0, 0, 0, 23, 23, 23, 23, 23, 0, 23,
+    23, 0,  0,  0,  23, 23, 23, 23, 23, 0,  23,
     23, 23, 0,  23, 23, 23, 23, 23, 23, 0,  23,
     23, 23, 0,  23, 23, 23, 0,  0,  0,  0,  23,
     23, 0,  0,  0,  23, 23, 0,  0,  0,  23, 23,
@@ -36,8 +39,9 @@ void Level1::Initialize() {
     state.map = new Map(LEVEL1_WIDTH, LEVEL1_HEIGHT, level1_data, mapTextureID, 1.0f, 17, 12);
     
     //Intialize Game Objects
+    win = false;
     
-    //Initialize Door
+    //Initialize Castle
     state.castle = new Entity();
     state.castle->entityType = CASTLE;
     state.castle->position = glm::vec3(9,0,0);
@@ -69,8 +73,6 @@ void Level1::Initialize() {
     state.player->height = 0.8f; //fix width & height so character is not floating
     state.player->width = 0.8f;
     
-    
-    
     state.enemies = new Entity[LEVEL1_ENEMYCOUNT];
     GLuint enemyTextureID = Util::LoadTexture("pacmanGhost.png");
     for (int i = 0; i < LEVEL1_ENEMYCOUNT; i++) {
@@ -98,14 +100,21 @@ void Level1::Initialize() {
     state.enemies[2].position = glm::vec3(2.0f, -12.0f, 0);
     state.enemies[2].startX = 2;
     state.enemies[2].moveLeft = 1;
-    state.enemies[2].moveLeft = 1;
+    state.enemies[2].moveRight = 1;
+    
+    fontTextureID = Util::LoadTexture("myFont.png");
     
 }
 
 void Level1::Update(float deltaTime) {
     state.player->Update(deltaTime, state.player, state.enemies, LEVEL1_ENEMYCOUNT, state.map);
+    
     state.player->loseGame(state.enemies, LEVEL1_ENEMYCOUNT);
     //code for going to new level
+    
+    if (state.player->CheckCollision(state.castle)){
+        win = true;
+    }
     
     for (int i = 0; i < LEVEL1_ENEMYCOUNT; i++) {
         state.enemies[i].Update(deltaTime, state.player, state.enemies, LEVEL1_ENEMYCOUNT, state.map);
@@ -122,4 +131,12 @@ void Level1::Render(ShaderProgram *program) {
     }
     
     state.player->Render(program);
+    
+    if (!state.player->isActive){
+        Util::DrawText(program, fontTextureID, "You Lose", 0.5f, -0.25f, state.player->position);
+    }
+    
+    if (win) {
+        Util::DrawText(program, fontTextureID, "You Win!", 1.0f, -0.25f, glm::vec3(2.0, -2.75,0));
+    }
 }

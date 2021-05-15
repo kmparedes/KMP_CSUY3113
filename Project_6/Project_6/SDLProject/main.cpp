@@ -19,8 +19,8 @@
 #include "Entity.hpp"
 #include "Map.hpp"
 #include "Scene.hpp"
+#include "Menu.hpp"
 #include "Level1.hpp"
-#include "Level2.hpp"
 
 
 SDL_Window* displayWindow;
@@ -29,7 +29,7 @@ bool gameIsRunning = true;
 ShaderProgram program;
 glm::mat4 viewMatrix, modelMatrix, projectionMatrix;
 
-GLuint fontTextureID;
+//GLuint fontTextureID;
 //Switch Scenes
 Scene *currentScene;
 Scene *sceneList[2];
@@ -41,6 +41,7 @@ void SwitchToScene(Scene *scene) {
 
 //music
 Mix_Music *music;
+Mix_Chunk *winSound;
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -61,10 +62,10 @@ void Initialize() {
     music = Mix_LoadMUS("Wholesome.mp3");
     Mix_PlayMusic(music, -1);
     Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+    winSound = Mix_LoadWAV("WinGrandPiano.wav");
     
     viewMatrix = glm::mat4(1.0f);
     modelMatrix = glm::mat4(1.0f);
-    //projectionMatrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
     projectionMatrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
     
     program.SetProjectionMatrix(projectionMatrix);
@@ -77,8 +78,9 @@ void Initialize() {
     
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    sceneList[0] = new Level1();
-    //sceneList[1] = new Level2();
+    sceneList[0] = new Menu();
+    sceneList[1] = new Level1();
+
     SwitchToScene(sceneList[0]);
     
     //fontTextureID = Util::LoadTexture("font1.png");
@@ -87,7 +89,10 @@ void Initialize() {
 
 void ProcessInput() {
     
-    currentScene->state.player->movement = glm::vec3(0);
+    if (currentScene != sceneList[0]){
+        currentScene->state.player->movement = glm::vec3(0);
+    }
+
     
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -107,9 +112,9 @@ void ProcessInput() {
                         // Move the player right
                         break;
                         
-                    case SDLK_SPACE:
-                        if (currentScene->state.player->collidedBottom){
-                            currentScene->state.player->jump = true;
+                    case SDLK_RETURN:
+                        if (currentScene == sceneList[0]){
+                            currentScene->state.nextScene = 1;
                         }
                         break;
                 }
@@ -120,28 +125,29 @@ void ProcessInput() {
     //holding down keys
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     
-    if (keys[SDL_SCANCODE_LEFT]) {
-        currentScene->state.player->movement.x = -1.0f;
-        currentScene->state.player->animIndices = currentScene->state.player->animLeft;
-    }
-    else if (keys[SDL_SCANCODE_RIGHT]) {
-        currentScene->state.player->movement.x = 1.0f;
-        currentScene->state.player->animIndices = currentScene->state.player->animRight;
-    }
-    else if (keys[SDL_SCANCODE_DOWN]) {
-        currentScene->state.player->movement.y = -1.0f;
-        currentScene->state.player->animIndices = currentScene->state.player->animDown;
-    }
-    else if (keys[SDL_SCANCODE_UP]) {
-        currentScene->state.player->movement.y = 1.0f;
-        currentScene->state.player->animIndices = currentScene->state.player->animUp;
+    if (currentScene != sceneList[0]){
+        if (keys[SDL_SCANCODE_LEFT]) {
+            currentScene->state.player->movement.x = -1.0f;
+            currentScene->state.player->animIndices = currentScene->state.player->animLeft;
+        }
+        else if (keys[SDL_SCANCODE_RIGHT]) {
+            currentScene->state.player->movement.x = 1.0f;
+            currentScene->state.player->animIndices = currentScene->state.player->animRight;
+        }
+        else if (keys[SDL_SCANCODE_DOWN]) {
+            currentScene->state.player->movement.y = -1.0f;
+            currentScene->state.player->animIndices = currentScene->state.player->animDown;
+        }
+        else if (keys[SDL_SCANCODE_UP]) {
+            currentScene->state.player->movement.y = 1.0f;
+            currentScene->state.player->animIndices = currentScene->state.player->animUp;
+        }
+        
+        if (glm::length(currentScene->state.player->movement) > 1.0f) {
+            currentScene->state.player->movement = glm::normalize(currentScene->state.player->movement);
+        }
     }
     
-    
-    
-    if (glm::length(currentScene->state.player->movement) > 1.0f) {
-        currentScene->state.player->movement = glm::normalize(currentScene->state.player->movement);
-    }
     
 }
 
@@ -170,14 +176,20 @@ void Update(){
     accumulator = deltaTime;
     
     viewMatrix = glm::mat4(1.0f);
-    if (currentScene->state.player->position.y > -11.75 && currentScene->state.player->position.y < -5) {
-        viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, -currentScene->state.player->position.y, 0));
+    if (currentScene != sceneList[0]){
+        if (currentScene->state.player->position.y > -11.75 && currentScene->state.player->position.y < -5) {
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, -currentScene->state.player->position.y, 0));
+        }
+        else if(currentScene->state.player->position.y > -5) {
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 2.75, 0));
+        }
+        else {
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 15.75, 0));
+        }
     }
-    else if(currentScene->state.player->position.y > -5) {
-        viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 2.75, 0));
-    }
-    else {
-        viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 15.75, 0));
+    
+    if (currentScene->state.player->CheckCollision(currentScene->state.castle)){
+        Mix_PlayChannel(-1, winSound,0);
     }
 }
 
@@ -188,7 +200,6 @@ void Render() {
     program.SetViewMatrix(viewMatrix);
     currentScene->Render(&program);
     
-    Util::DrawText(&program, fontTextureID, "Lives: " + std::to_string(3), 0.5f, -0.25f, glm::vec3(-3.75f, 3.3, 0));
     
     SDL_GL_SwapWindow(displayWindow);
 }
