@@ -70,16 +70,16 @@ void Level1::Initialize() {
     state.player->animCols = 4;
     state.player->animRows = 4;
     
-    state.player->height = 0.8f; //fix width & height so character is not floating
-    state.player->width = 0.8f;
+    state.player->height = 0.7f;
+    state.player->width = 0.7f;
     
     state.enemies = new Entity[LEVEL1_ENEMYCOUNT];
     GLuint enemyTextureID = Util::LoadTexture("pacmanGhost.png");
     for (int i = 0; i < LEVEL1_ENEMYCOUNT; i++) {
         state.enemies[i].entityType = ENEMY;
         state.enemies[i].textureID = enemyTextureID;
-        state.enemies[i].height = 0.7f;
-        state.enemies[i].width = 0.7f;
+        state.enemies[i].height = 0.6f;
+        state.enemies[i].width = 0.6f;
         state.enemies[i].speed = 1;
         state.enemies[i].aiType = WALKER;
         state.enemies[i].aiState = WALKING;

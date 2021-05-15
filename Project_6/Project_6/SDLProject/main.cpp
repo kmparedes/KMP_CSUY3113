@@ -61,7 +61,7 @@ void Initialize() {
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
     music = Mix_LoadMUS("Wholesome.mp3");
     Mix_PlayMusic(music, -1);
-    Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+    Mix_VolumeMusic(MIX_MAX_VOLUME/5);
     winSound = Mix_LoadWAV("WinGrandPiano.wav");
     
     viewMatrix = glm::mat4(1.0f);
@@ -83,7 +83,6 @@ void Initialize() {
 
     SwitchToScene(sceneList[0]);
     
-    //fontTextureID = Util::LoadTexture("font1.png");
  
 }
 
